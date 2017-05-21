@@ -1,9 +1,9 @@
+#!/usr/bin/python
 """
 Merge .srt files from udacity videos into single .md file.
 http://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
 """
-import os
-import re
+import os, re, sys, getopt
 
 
 def atof(text):
@@ -126,7 +126,7 @@ def srtInFolders2Md(root_folder, out_file_name):
         print("%s does not exist" % root_folder)
         return
 
-    directories = os.walk(root_folder).next()[1]
+    directories = os.listdir(root_folder)
     directories.sort(key=natural_keys)
 
     finalString = ""
@@ -140,3 +140,30 @@ def srtInFolders2Md(root_folder, out_file_name):
         outfile.write("%s" % finalString)
 
     return
+
+
+def main(argv):
+    inputfolder = ''
+    outputfile = ''
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
+    except getopt.GetoptError:
+        print('test.py -i <inputfile> -o <outputfile>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('test.py -i <inputfile> -o <outputfile>')
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfolder = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
+    print("Input folder : ", inputfolder)
+    print("Output file : ", outputfile)
+
+    # Call srtInFolders2Md
+    srtInFolders2Md(inputfolder, outputfile)
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
