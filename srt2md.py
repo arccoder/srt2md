@@ -143,26 +143,32 @@ def srtInFolders2Md(root_folder, out_file_name):
 
 
 def main(argv):
-    inputfolder = ''
-    outputfile = ''
+    inputfolder = ""
+    outputfile = ""
+    usage = "Usage:  srt2md.py -i <inputfile> -o <outputfile>"
     try:
         opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
     except getopt.GetoptError:
-        print('test.py -i <inputfile> -o <outputfile>')
+        print(usage)
         sys.exit(2)
     for opt, arg in opts:
-        if opt == '-h':
-            print('test.py -i <inputfile> -o <outputfile>')
+        if opt == "-h":
+            print(usage)
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfolder = arg
         elif opt in ("-o", "--ofile"):
             outputfile = arg
-    print("Input folder : ", inputfolder)
-    print("Output file : ", outputfile)
+    if len(inputfolder) == 0 or len(outputfile) == 0:
+        print(usage)
+    else:
+        print("Input folder : ", inputfolder)
+        print("Output file : ", outputfile)
 
-    # Call srtInFolders2Md
-    srtInFolders2Md(inputfolder, outputfile)
+        # Call srtInFolders2Md
+        srtInFolders2Md(inputfolder, outputfile)
+
+    return
 
 
 if __name__ == "__main__":
